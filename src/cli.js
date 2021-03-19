@@ -24,11 +24,17 @@ export async function createConfigFromArgs(args) {
   program
     .version(version)
     .arguments('[workDir]', 'working directory, defaults to the current directory')
-    .action((workDir) => {
-      config = new Config({ workDir: workDirOrDefault(workDir) });
+    .option('-d, --databaseUrl <databaseUrl>', 'Database URL, defaults to an in-memory SQLite database', 'sqlite::memory:')
+    .action(async (workDir, options) => {
+      config = new Config({ 
+        workDir: workDirOrDefault(workDir),
+        databaseUrl: options.databaseUrl
+      });
     });
 
-  await (args ? program.parseAsync(args, { from: 'user' }) : program.parseAsync());
+  const commanderArguments = args ? [args, { from: 'user' }] : [];
+
+  await program.parseAsync(...commanderArguments);
 
   return config;
 }
