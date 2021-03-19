@@ -1,6 +1,6 @@
 {
   "name": "graphql-in-a-box",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "An opinionated out-of-the-box configuration for apollo-server.",
   "main": "dist/index.js",
   "bin": {
