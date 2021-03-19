@@ -1,0 +1,4 @@
+type Magazine {
+  id: ID!
+  name: String!
+}

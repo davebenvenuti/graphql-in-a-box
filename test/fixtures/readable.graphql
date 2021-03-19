@@ -1,0 +1,34 @@
+enum Subject {
+  HISTORY
+  SCIENCE
+}
+
+interface Readable {
+  id: ID!
+  title: String!
+  authors: [Author]!
+}
+
+type Novel implements Readable {
+  id: ID!
+  title: String!
+  authors: [Author]!
+}
+
+type TextBook implements Readable {
+  id: ID!
+  title: String!
+  authors: [Author]!
+
+  subject: Subject
+  date: Date
+}
+
+type Article implements Readable {
+  id: ID!
+  title: String!
+  authors: [Author]!
+
+  magazine: Magazine
+}
+
