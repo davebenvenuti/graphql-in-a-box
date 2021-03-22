@@ -10,11 +10,31 @@ function fields(definition) {
     filter(({ kind }) => kind == "FieldDefinition"),
     map((field) => {
       const name = get('name.value', field);
+      const description = get('description.value', field);
 
-      return [name, combinedTypes(field)];
+      const association = inferAssociation(description);
+
+      const fieldInfo = combinedTypes(field);
+
+      if(association) {
+        fieldInfo[association] = true;
+      }
+
+      return [name, fieldInfo];
     }),
     fromPairs
   )(definition);
+}
+
+function inferAssociation(description) {
+  if(!description) return null;
+
+  if(description.match(/belongsToMany/)) return 'belongsToMany';
+  if(description.match(/belongsTo/)) return 'belongsTo';
+  if(description.match(/hasMany/)) return 'hasMany';
+  if(description.match(/hasOne/)) return 'hasOne';
+
+  return null;
 }
 
 function combinedTypes(fieldOrSubtype) {

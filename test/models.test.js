@@ -112,7 +112,7 @@ describe("models", () => {
       });
     });
 
-  it("handles types consisting of scalar fields of other custom types", () => {
+    it("handles types consisting of scalar fields of other custom types", () => {
       const scalarEntityWithCustomType = gql`
         type Thing {
           id: ID!
@@ -174,66 +174,72 @@ describe("models", () => {
       });
     });
 
-  it("handles types consisting of list fields of other custom types", () => {
-      const listEntityWithCustomTypes = gql`
-        type Thing {
-          id: ID!
-          stringAttribute: String
-        }
+    it("handles types consisting of list fields of other custom types", () => {
+    const listEntityWithCustomTypes = gql`
+      type Thing {
+        id: ID!
+        stringAttribute: String
+      }
 
-        type MyListTypeWithCustomTypes {
-          id: ID!
-          requiredThings: [Thing]!
-          optionalThings: [Thing]
-        }
-      `;
+      type MyListTypeWithCustomTypes {
+        id: ID!
 
-      const definitions = objectTypeDefinitionsFromGQLEntities([listEntityWithCustomTypes]);
+        """hasMany"""
+        requiredThings: [Thing]!
 
-      expect(definitions).toBeTruthy();
+        """belongsToMany"""
+        optionalThings: [Thing]
+      }
+    `;
 
-      const thingDefinition = definitions.Thing;
+    const definitions = objectTypeDefinitionsFromGQLEntities([listEntityWithCustomTypes]);
 
-      expect(thingDefinition).toBeTruthy();
+    expect(definitions).toBeTruthy();
 
-      [
-        ['id', 'ID'],
-        ['stringAttribute', 'String']
-      ].forEach(([field, expectedType]) => {
-        const details = thingDefinition[field];
+    const thingDefinition = definitions.Thing;
 
-        expect(details).toBeTruthy();
-        expect(details.name).toEqual(field);
-        expect(details.type).toEqual(expectedType);
-      });
+    expect(thingDefinition).toBeTruthy();
 
-      const definition = definitions.MyListTypeWithCustomTypes;
+    [
+      ['id', 'ID'],
+      ['stringAttribute', 'String']
+    ].forEach(([field, expectedType]) => {
+      const details = thingDefinition[field];
 
-      expect(definition).toBeTruthy();
+      expect(details).toBeTruthy();
+      expect(details.name).toEqual(field);
+      expect(details.type).toEqual(expectedType);
+    });
 
-      [
-        ['requiredThings', 'Thing'],
-      ].forEach(([field, expectedType]) => {
-        const details = definition[field];
+    const definition = definitions.MyListTypeWithCustomTypes;
 
-        expect(details).toBeTruthy();
-        expect(details.name).toEqual(field);
-        expect(details.disallowNull).toEqual(true);
-        expect(details.type).toEqual(expectedType);
-        expect(details.list).toEqual(true);
-      });
+    expect(definition).toBeTruthy();
 
-      [
-        ['optionalThings', 'Thing'],
-      ].forEach(([field, expectedType]) => {
-        const details = definition[field];
+    [
+      ['requiredThings', 'Thing'],
+    ].forEach(([field, expectedType]) => {
+      const details = definition[field];
 
-        expect(details).toBeTruthy();
-        expect(details.name).toEqual(field);
-        expect(details.disallowNull).toBeFalsy();
-        expect(details.type).toEqual(expectedType);
-        expect(details.list).toEqual(true);
-      });
+      expect(details).toBeTruthy();
+      expect(details.name).toEqual(field);
+      expect(details.disallowNull).toEqual(true);
+      expect(details.type).toEqual(expectedType);
+      expect(details.list).toEqual(true);
+      expect(details.hasMany).toEqual(true);
+    });
+
+    [
+      ['optionalThings', 'Thing'],
+    ].forEach(([field, expectedType]) => {
+      const details = definition[field];
+
+      expect(details).toBeTruthy();
+      expect(details.name).toEqual(field);
+      expect(details.disallowNull).toBeFalsy();
+      expect(details.type).toEqual(expectedType);
+      expect(details.list).toEqual(true);
+      expect(details.belongsToMany).toEqual(true);
+    });
     });
   });
 });
