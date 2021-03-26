@@ -10,6 +10,7 @@
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "lint": "eslint src test",
+    "lint:fix": "eslint --fix src test",
     "build": "babel -d dist \"src/**/*.js\"",
     "start": "babel-node src/index.js",
     "debug": "babel-node --inspect-brk src/index.js"
@@ -33,6 +34,7 @@
     "glob": "^7.1.6",
     "graphql": "^15.5.0",
     "lodash": "^4.17.21",
-    "sequelize": "^6.5.0"
+    "sequelize": "^6.5.0",
+    "sqlite3": "^5.0.2"
   }
 }
