@@ -1,4 +1,5 @@
-import { init, sequelizeInstance, makeModels } from '../../../src/db/adapters/sequelize';
+import { init, sequelizeInstance, makeModels, pluralNameForModel } from '../../../src/db/adapters/sequelize';
+import { makeModel } from '../../helpers';
 
 describe("db/adapters/sequelize", () => {
   describe("initialization and singleton instance", () => {
@@ -217,5 +218,17 @@ describe("db/adapters/sequelize", () => {
         expect(() => makeModels(objectTypeDefinitions)).toThrow(/list type detected with non-many association/i);
       });
     });
+  });
+
+  describe("pluralNameForModel()", () => {
+  it("returns the plural name for a model", () => {
+      const User = makeModel("user");
+
+      expect(pluralNameForModel(User)).toEqual("users");
+
+      const Person = makeModel("person");
+
+      expect(pluralNameForModel(Person)).toEqual("people");
+    })
   });
 });

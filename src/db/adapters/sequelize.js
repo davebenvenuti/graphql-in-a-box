@@ -162,3 +162,7 @@ export async function reset() {
     _sequelizeInstance = null;
   }
 }
+
+export function pluralNameForModel(model) {
+  return model.tableName;
+}
