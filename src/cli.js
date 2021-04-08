@@ -26,7 +26,7 @@ export async function createConfigFromArgs(args) {
     .arguments('[workDir]', 'working directory, defaults to the current directory')
     .option('-d, --databaseUrl <databaseUrl>', 'Database URL, defaults to an in-memory SQLite database', 'sqlite::memory:')
     .action(async (workDir, options) => {
-      config = new Config({ 
+      config = new Config({
         workDir: workDirOrDefault(workDir),
         databaseUrl: options.databaseUrl
       });
