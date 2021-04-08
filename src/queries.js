@@ -12,9 +12,17 @@ export function makeQueryResolvers(models, nameForModel, pluralNameForModel) {
 }
 
 function getForModel(model) {
-  return async (_parent, { id }) => await model.findOne({ where: { id }});
+  return async (_parent, { id }) => {
+    const object = await model.findOne({ where: { id }});
+
+    return object ? object.toJSON() : null;
+  };
 }
 
 function indexForModel(model) {
-  return async () => await model.findAll()();
+  return async () => {
+    const objects = await model.findAll();
+
+    return map((object) => object.toJSON(), objects);
+  };
 }
