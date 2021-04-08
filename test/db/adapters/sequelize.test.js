@@ -4,7 +4,7 @@ import { makeModel } from '../../helpers';
 describe("db/adapters/sequelize", () => {
   describe("initialization and singleton instance", () => {
     describe("sequelizeInstance()", () => {
-    it("raises an exception if the singleton was never initialized", () => {
+      it("raises an exception if the singleton was never initialized", () => {
         expect(() => sequelizeInstance()).toThrow(/initialize the database first/i);
 
         init("sqlite::memory:");
@@ -17,7 +17,7 @@ describe("db/adapters/sequelize", () => {
   });
 
   describe("makeModels()", () => {
-  it("constructs models with scalar primitive types", () => {
+    it("constructs models with scalar primitive types", () => {
       const objectTypeDefinitions = {
         Person: {
           id: { type: 'ID', disallowNull: true },
@@ -68,7 +68,7 @@ describe("db/adapters/sequelize", () => {
       });
     });
 
-  it("constructs models with array scalar types", () => {
+    it("constructs models with array scalar types", () => {
       const objectTypeDefinitions = {
         LotteryTicket: {
           id: { type: 'ID', disallowNull: true },
@@ -95,7 +95,7 @@ describe("db/adapters/sequelize", () => {
     });
 
     describe("with attributes with custom types", () => {
-    it("requires an association", () => {
+      it("requires an association", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -111,7 +111,7 @@ describe("db/adapters/sequelize", () => {
         expect(() => makeModels(objectTypeDefinitions)).toThrow(/non-primitive data types require an association type/i);
       });
 
-    it("handles a hasOne relationship", () => {
+      it("handles a hasOne relationship", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -130,7 +130,7 @@ describe("db/adapters/sequelize", () => {
         expect(Book.associations.Author.associationType).toEqual("HasOne");
       });
 
-    it("handles a belongsTo relationship", () => {
+      it("handles a belongsTo relationship", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -150,7 +150,7 @@ describe("db/adapters/sequelize", () => {
         expect(Author.associations.Book.associationType).toEqual("BelongsTo");
       });
 
-    it("handles a hasMany relationship", () => {
+      it("handles a hasMany relationship", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -169,7 +169,7 @@ describe("db/adapters/sequelize", () => {
         expect(Book.associations.Authors.associationType).toEqual("HasMany");
       });
 
-    it("requires a hasMany relationship to be a list", () => {
+      it("requires a hasMany relationship to be a list", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -185,7 +185,7 @@ describe("db/adapters/sequelize", () => {
         expect(() => makeModels(objectTypeDefinitions)).toThrow(/scalar type detected with many association/i);
       });
 
-    it("requires a hasOne relationship not to be a list", () => {
+      it("requires a hasOne relationship not to be a list", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },
@@ -201,7 +201,7 @@ describe("db/adapters/sequelize", () => {
         expect(() => makeModels(objectTypeDefinitions)).toThrow(/list type detected with non-many association/i);
       });
 
-    it("requires a belongsTo relationship not to be a list", () => {
+     it("requires a belongsTo relationship not to be a list", () => {
         const objectTypeDefinitions = {
           Book: {
             id: { type: 'ID', disallowNull: true, },

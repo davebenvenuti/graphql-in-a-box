@@ -4,7 +4,7 @@ import { objectTypeDefinitionsFromGQLEntities } from '../src/models';
 
 describe("models", () => {
   describe("objectTypeDefinitionsFromGQLEntities", () => {
-  it("handles types consisting of standard scalar types", () => {
+    it("handles types consisting of standard scalar types", () => {
       const scalarEntity = gql`
         type MyScalarType {
           id: ID!
@@ -58,7 +58,7 @@ describe("models", () => {
       });
     });
 
-  it("handles types consisting of standard list types", () => {
+    it("handles types consisting of standard list types", () => {
       const listEntity = gql`
         type MyListType {
           id: ID!
@@ -112,7 +112,7 @@ describe("models", () => {
       });
     });
 
-  it("handles types consisting of scalar fields of other custom types", () => {
+    it("handles types consisting of scalar fields of other custom types", () => {
       const scalarEntityWithCustomType = gql`
         type Thing {
           id: ID!
@@ -174,7 +174,7 @@ describe("models", () => {
       });
     });
 
-  it("handles types consisting of list fields of other custom types", () => {
+    it("handles types consisting of list fields of other custom types", () => {
       const listEntityWithCustomTypes = gql`
         type Thing {
           id: ID!
