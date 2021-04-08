@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --",
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
     "build": "babel -d dist \"src/**/*.js\"",
