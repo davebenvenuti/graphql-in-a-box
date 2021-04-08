@@ -221,12 +221,12 @@ describe("db/adapters/sequelize", () => {
   });
 
   describe("pluralNameForModel()", () => {
-  it("returns the plural name for a model", () => {
-      const User = makeModel("user");
+    it("returns the plural name for a model", async () => {
+      const User = await makeModel("user");
 
       expect(pluralNameForModel(User)).toEqual("users");
 
-      const Person = makeModel("person");
+      const Person = await makeModel("person");
 
       expect(pluralNameForModel(Person)).toEqual("people");
     })

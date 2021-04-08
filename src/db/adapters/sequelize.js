@@ -166,3 +166,7 @@ export async function reset() {
 export function pluralNameForModel(model) {
   return model.tableName;
 }
+
+export function nameForModel(model) {
+  return model.name;
+}
