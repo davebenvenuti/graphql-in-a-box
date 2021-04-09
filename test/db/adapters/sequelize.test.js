@@ -1,6 +1,12 @@
 import { init, sequelizeInstance, makeModels, pluralNameForModel } from '../../../src/db/adapters/sequelize';
 import { makeModel } from '../../helpers';
 
+async function expectGeneratedId(model, attributes) {
+  const instance = await model.create(attributes);
+
+  expect(instance.id).toBeTruthy();
+}
+
 describe("db/adapters/sequelize", () => {
   describe("initialization and singleton instance", () => {
     describe("sequelizeInstance()", () => {
@@ -17,7 +23,25 @@ describe("db/adapters/sequelize", () => {
   });
 
   describe("makeModels()", () => {
-    it("constructs models with scalar primitive types", () => {
+    it("constructs models that properly auto-generate uuids", async () => {
+      const objectTypeDefinitions = {
+        Person: {
+          id: { type: 'ID', disallowNull: true },
+          name: { type: 'String', disallowNull: true },
+          age: { type: 'Int' },
+          weight: { type: 'Float' },
+          alive: { type: 'Boolean', disallowNull: true }
+        }
+      };
+
+      const { Person } = makeModels(objectTypeDefinitions);
+
+      await sequelizeInstance().sync();
+
+      await expectGeneratedId(Person, { name: "someone", alive: true });
+    });
+
+    it("constructs models with scalar primitive types", async () => {
       const objectTypeDefinitions = {
         Person: {
           id: { type: 'ID', disallowNull: true },

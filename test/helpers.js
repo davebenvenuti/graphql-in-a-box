@@ -21,7 +21,7 @@ function generateModelName() {
 
 function generateAttributes() {
   return {
-    id: { type: DataTypes.UUID, primaryKey: true },
+    id: { type: DataTypes.UUID, primaryKey: true, autoIncrement: false },
     name: DataTypes.STRING,
     description: DataTypes.STRING
   };

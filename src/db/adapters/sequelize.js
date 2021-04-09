@@ -82,14 +82,14 @@ function validateField(fieldName, field) {
 function typeInfoForField(field, primaryKey = false) {
   const { type, list, disallowNull } = field;
 
-  if(isPrimitive(type)) {
-    if(list) {
-      return { type: DataTypes.JSON, allowNull: !disallowNull, primaryKey };
-    } else {
-      return { type: translateFieldType(type), allowNull: !disallowNull, primaryKey };
-    }
+  if(!isPrimitive(type)) return null;
+
+  if(list) return { type: DataTypes.JSON, allowNull: !disallowNull, primaryKey: false };
+
+  if(primaryKey) {
+    return { type: Sequelize.UUID, allowNull: !disallowNull, primaryKey: true, defaultValue: Sequelize.UUIDV1 };
   } else {
-    return null;
+    return { type: translateFieldType(type), allowNull: !disallowNull, primaryKey: false }
   }
 }
 
@@ -141,7 +141,8 @@ export function init(databaseUrl) {
       min: 0,
       acquire: 30000,
       idle: 10000
-    }
+    },
+    logging: process.env.NODE_ENV != "test"
   });
 }
 
