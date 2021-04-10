@@ -21,7 +21,6 @@ function generateModelName() {
 
 function generateAttributes() {
   return {
-    id: { type: DataTypes.UUID, primaryKey: true, autoIncrement: false },
     name: DataTypes.STRING,
     description: DataTypes.STRING
   };
@@ -29,7 +28,15 @@ function generateAttributes() {
 
 export async function makeModel(modelName, attributes) {
   if(!modelName) modelName = generateModelName();
-  if(!attributes) attributes = generateAttributes();
+
+  if(attributes) {
+    attributes = { ...attributes };
+  } else {
+    attributes = generateAttributes();
+  }
+
+
+  attributes.id = { type: DataTypes.UUID, primaryKey: true, autoIncrement: false, defaultValue: Sequelize.UUIDV1 };
 
   const model = _sequelize.define(modelName, attributes);
 
